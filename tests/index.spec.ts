@@ -84,9 +84,13 @@ const batchCreatePagesByNotes = async (_page: Page) => {
   const sourcePath = process.env.AFFiNE_LOCAL_SOURCE_PATH || './notes';
   const fileList = scanDirs(sourcePath).fileList;
   const pageTiles: string[] = removePrefixOfFileList(fileList, sourcePath);
+  // const supppoertedFileTypes = ['.md', '.markdown', '.mdown', '.mkdn'];
   SYNC_CLOUD_TIME = fileList.length * 5000 + 5000;
   for (let i = 0; i < fileList.length; i++) {
-    const file = fileList[i];
+    const file = fileList[i] as string;
+    if (!file.includes('.md')) {
+      continue;
+    }
     const pageContent = fs.readFileSync(file, 'utf-8');
     const pageTitle = pageTiles[i];
     await createPage(_page, pageTitle, pageContent);
