@@ -1,6 +1,7 @@
 # AFFiNE-ghost
 
 AFFiNE-ghost is a tool that migrates notes into affine and easily generates an affine blog site from your personal notes by configuring the environment 
+![](https://visitor-badge.glitch.me/badge?page_id=tzhangchi.affine-ghost)
 
 ## Config .env
 
