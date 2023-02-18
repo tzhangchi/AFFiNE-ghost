@@ -88,7 +88,10 @@ const enableCloudAndPublic = async (_page: Page) => {
   await _page.waitForTimeout(5000);
   console.log(
     '[info] enableCloudAndPublic success ' +
-      _page.url().replace('workspace', 'public-workspace').replace('/', '')
+      _page
+        .url()
+        .replace('workspace', 'public-workspace')
+        .replace('/setting', '')
   );
 };
 const batchCreatePagesByNotes = async (_page: Page) => {
