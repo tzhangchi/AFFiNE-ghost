@@ -2,13 +2,13 @@ require('dotenv').config();
 import { expect, Page } from '@playwright/test';
 import fs from 'fs';
 
-import { removeRootName, scanDirs } from './libs/file-logic';
+import { removePrefixOfFileList, scanDirs } from './libs/file-logic';
 import { loadPage } from './libs/load-page';
 import { newPage } from './libs/page-logic';
 import { test } from './libs/playwright';
 import { createWorkspace } from './libs/workspace-logic';
 loadPage();
-const token = process.env.token;
+const AFFiNE_LOGIN_TOEKN = process.env.AFFiNE_LOGIN_TOEKN;
 let SYNC_CLOUD_TIME = 5000;
 test.describe('create cloud workspace by different ways of importing ', () => {
   test('import by markdowns', async ({ page }) => {
@@ -18,7 +18,13 @@ test.describe('create cloud workspace by different ways of importing ', () => {
     console.log('passAuth success');
 
     await createWorkspace(
-      { name: process.env.BLOG_NAME || 'AFFiNE-ghost' },
+      {
+        name:
+          process.env.AFFiNE_WORKSPACE_NAME ||
+          (process.env.AFFiNE_LOCAL_SOURCE_PATH &&
+            process.env.AFFiNE_LOCAL_SOURCE_PATH.split('/').reverse()[0]) ||
+          'AFFiNE-ghost',
+      },
       page
     );
 
@@ -41,7 +47,7 @@ const passAuth = async (_page: Page) => {
     function (o) {
       window.localStorage.setItem('affine:login', o.token || '');
     },
-    { token }
+    { token: AFFiNE_LOGIN_TOEKN }
   );
   await _page.reload();
 
@@ -75,11 +81,12 @@ const enableCloudAndPublic = async (_page: Page) => {
   );
 };
 const batchCreatePagesByNotes = async (_page: Page) => {
-  const filesList = scanDirs('./notes').filesList;
-  const pageTiles: string[] = removeRootName(filesList, './notes');
-  SYNC_CLOUD_TIME = filesList.length * 5000 + 5000;
-  for (let i = 0; i < filesList.length; i++) {
-    const file = filesList[i];
+  const sourcePath = process.env.AFFiNE_LOCAL_SOURCE_PATH || './notes';
+  const fileList = scanDirs(sourcePath).fileList;
+  const pageTiles: string[] = removePrefixOfFileList(fileList, sourcePath);
+  SYNC_CLOUD_TIME = fileList.length * 5000 + 5000;
+  for (let i = 0; i < fileList.length; i++) {
+    const file = fileList[i];
     const pageContent = fs.readFileSync(file, 'utf-8');
     const pageTitle = pageTiles[i];
     await createPage(_page, pageTitle, pageContent);

@@ -1,8 +1,8 @@
 import { test } from './libs/playwright';
-import { scanDirs, removeRootName } from './libs/file-logic';
+import { scanDirs, removePrefixOfFileList } from './libs/file-logic';
 test.describe('scan ', () => {
   test('scan dirs', async ({ page }) => {
-    const { filesList } = scanDirs('./notes');
-    console.log(removeRootName(filesList, './notes'));
+    const { fileList } = scanDirs('./notes');
+    console.log(removePrefixOfFileList(fileList, './notes'));
   });
 });

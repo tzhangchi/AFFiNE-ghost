@@ -3,18 +3,18 @@ import path from 'path';
 
 function scanDirs(targtDir: string) {
   let collectObj = {
-    filesList: [],
+    fileList: [],
     dirsList: [],
   };
 
   function readFileList(
     dir: string,
     collectObj: {
-      filesList: string[];
+      fileList: string[];
       dirsList: string[];
     }
   ) {
-    const { filesList, dirsList } = collectObj;
+    const { fileList, dirsList } = collectObj;
     const files = fs.readdirSync(dir);
     files.forEach((item, index) => {
       const fullPath = path.join(dir, item);
@@ -23,7 +23,7 @@ function scanDirs(targtDir: string) {
         dirsList.push(fullPath);
         readFileList(path.join(dir, item), collectObj); //递归读取文件
       } else {
-        filesList.push(fullPath);
+        fileList.push(fullPath);
       }
     });
     return collectObj;
@@ -34,10 +34,10 @@ function scanDirs(targtDir: string) {
   return collectObj;
 }
 
-function removeRootName(filesList: string[], rootName: string) {
-  return filesList.map(item => {
+function removePrefixOfFileList(fileList: string[], rootName: string) {
+  return fileList.map(item => {
     return item.slice(rootName.length - 1, item.length);
   });
 }
 
-export { removeRootName, scanDirs };
+export { removePrefixOfFileList, scanDirs };
