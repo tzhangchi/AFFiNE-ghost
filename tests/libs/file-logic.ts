@@ -35,8 +35,11 @@ function scanDirs(targtDir: string) {
 }
 
 function removePrefixOfFileList(fileList: string[], rootName: string) {
+  if (!rootName.endsWith('/')) {
+    rootName += '/';
+  }
   return fileList.map(item => {
-    return item.slice(rootName.length - 1, item.length);
+    return item.replace(rootName, '');
   });
 }
 

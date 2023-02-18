@@ -9,13 +9,13 @@ import { test } from './libs/playwright';
 import { createWorkspace } from './libs/workspace-logic';
 loadPage();
 const AFFiNE_LOGIN_TOEKN = process.env.AFFiNE_LOGIN_TOEKN;
-let SYNC_CLOUD_TIME = 5000;
+let SYNC_CLOUD_TIME = 2500;
 test.describe('create cloud workspace by different ways of importing ', () => {
   test('import by markdowns', async ({ page }) => {
     console.log(page.url());
 
     await passAuth(page);
-    console.log('passAuth success');
+    console.log('[info] passAuth success');
 
     await createWorkspace(
       {
@@ -29,10 +29,10 @@ test.describe('create cloud workspace by different ways of importing ', () => {
     );
 
     await batchCreatePagesByNotes(page);
-    console.log('batchCreatePagesByNotes success');
+    console.log('[info] batchCreatePagesByNotes success');
 
     await enableCloudAndPublic(page);
-    console.log('enableCloud success');
+    console.log('[info] enableCloud success');
   });
 });
 
@@ -62,7 +62,16 @@ const createPage = async (_page: Page, title: string, content: string) => {
   await _page.getByPlaceholder('Title').click();
   await _page.getByPlaceholder('Title').fill(title);
   await _page.getByRole('paragraph').click();
-  await _page.getByRole('paragraph').fill(content);
+
+  // await _page.getByRole('paragraph').fill(content);
+  const editorImportMakrdown = await _page.evaluate(
+    function (o) {
+      const editor = window.document.querySelector('editor-container');
+      const frameId = editor.model[0].children[0].id;
+      editor.__clipboard.importMarkdown(o.content, frameId);
+    },
+    { content: content }
+  );
 };
 
 const enableCloudAndPublic = async (_page: Page) => {
@@ -74,10 +83,12 @@ const enableCloudAndPublic = async (_page: Page) => {
 
   await _page.getByRole('link', { name: 'Settings' }).click();
   await _page.getByText('Publish').click();
-  await _page.getByRole('button', { name: 'Publish to web' }).click();
 
+  await _page.getByRole('button', { name: 'Publish to web' }).click();
+  await _page.waitForTimeout(5000);
   console.log(
-    'enableCloudAndPublic success ' + _page.getByRole('textbox').textContent()
+    '[info] enableCloudAndPublic success ' +
+      _page.url().replace('workspace', 'public-workspace').replace('/', '')
   );
 };
 const batchCreatePagesByNotes = async (_page: Page) => {
