@@ -1,3 +1,8 @@
+# AFFiNE-ghost
+
+AFFiNE-ghost is a tool that migrates notes into affine and easily generates an affine blog site from your personal notes by configuring the environment's quorum
+
+
 Step 1 - create `.env` in root
 
 ```
