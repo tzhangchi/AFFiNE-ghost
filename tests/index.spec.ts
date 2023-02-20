@@ -47,7 +47,7 @@ const passAuth = async (_page: Page) => {
     function (o) {
       window.localStorage.setItem('affine:login', o.token || '');
     },
-    { token: AFFiNE_LOGIN_TOEKN }
+    { token: AFFiNE_LOGIN_TOKEN }
   );
   await _page.reload();
 

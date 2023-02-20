@@ -10,7 +10,7 @@ create `.env` in root
 
 ```shell
 AFFiNE_APP_URL=https://app.affine.pro/
-AFFiNE_LOGIN_TOEKN={"token":###############}
+AFFiNE_LOGIN_TOKEN={"token":###############}
 AFFiNE_WORKSPACE_NAME=AFFiNE-docs
 AFFiNE_LOCAL_SOURCE_PATH=/Users/affiner/src/AFFiNE-docs
 
