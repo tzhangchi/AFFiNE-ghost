@@ -61,8 +61,10 @@ const passAuth = async (_page: Page) => {
 
   await _page.waitForTimeout(3000);
 
-  // //check login
-  // expect(await page.getByText('zhangchi.page')).not.toBeNull();
+  // check login success, if error here, please check your token
+  // await _page.getByTestId('workspace-name').click();
+  // await _page.waitForTimeout(1000);
+  // expect(await _page.locator('Sign in AFFiNE Cloud')).not.toBeDefined();
 };
 
 const createPage = async (_page: Page, title: string, content: string) => {
@@ -113,7 +115,7 @@ const batchCreatePagesByNotes = async (_page: Page) => {
   const fileList = scanDirs(sourcePath).fileList;
   const pageTiles: string[] = removePrefixOfFileList(fileList, sourcePath);
   // const supppoertedFileTypes = ['.md', '.markdown', '.mdown', '.mkdn'];
-  SYNC_CLOUD_TIME = fileList.length * 100;
+  SYNC_CLOUD_TIME = fileList.length * 100 + 3000;
   for (let i = 0; i < fileList.length; i++) {
     const file = fileList[i] as string;
     if (!file.includes('.md')) {
