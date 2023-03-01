@@ -12,27 +12,31 @@ const AFFiNE_LOGIN_TOKEN = process.env.AFFiNE_LOGIN_TOKEN;
 let SYNC_CLOUD_TIME = 2500;
 test.describe('create cloud workspace by different ways of importing ', () => {
   test('import by markdowns', async ({ page }) => {
+    await page.waitForTimeout(2000);
     console.log(page.url());
 
     await passAuth(page);
     console.log('[info] passAuth success');
 
+    const newWorkspaceName =
+      process.env.AFFiNE_WORKSPACE_NAME ||
+      (process.env.AFFiNE_LOCAL_SOURCE_PATH &&
+        process.env.AFFiNE_LOCAL_SOURCE_PATH.split('/').reverse()[0]) ||
+      'AFFiNE-ghost';
     await createWorkspace(
       {
-        name:
-          process.env.AFFiNE_WORKSPACE_NAME ||
-          (process.env.AFFiNE_LOCAL_SOURCE_PATH &&
-            process.env.AFFiNE_LOCAL_SOURCE_PATH.split('/').reverse()[0]) ||
-          'AFFiNE-ghost',
+        name: newWorkspaceName,
       },
       page
     );
+    console.log(`[info] createWorkspace [${newWorkspaceName}] success `);
+    await page.waitForTimeout(2000);
+
+    console.log(page.url());
 
     await batchCreatePagesByNotes(page);
-    console.log('[info] batchCreatePagesByNotes success');
 
     await enableCloudAndPublic(page);
-    console.log('[info] enableCloud success');
   });
 });
 
@@ -75,31 +79,37 @@ const createPage = async (_page: Page, title: string, content: string) => {
 };
 
 const enableCloudAndPublic = async (_page: Page) => {
+  await _page.getByTestId('sliderBar').click();
   await _page.getByRole('link', { name: 'Settings' }).click();
   await _page.getByText('Collaboration').click();
   await _page.getByRole('button', { name: 'Enable AFFiNE Cloud' }).click();
   await _page.getByRole('button', { name: 'Enable' }).click();
+
   await _page.waitForTimeout(SYNC_CLOUD_TIME);
 
-  await _page.getByRole('link', { name: 'Settings' }).click();
-  await _page.getByText('Publish').click();
+  console.log('[info] enableCloud success');
 
-  await _page.getByRole('button', { name: 'Publish to web' }).click();
-  await _page.waitForTimeout(5000);
-  console.log(
-    '[info] enableCloudAndPublic success ' +
-      _page
-        .url()
-        .replace('workspace', 'public-workspace')
-        .replace('/setting', '')
-  );
+  console.log(_page.url());
+
+  // await _page.getByRole('link', { name: 'Settings' }).click();
+  // await _page.getByText('Publish', { exact: true }).click();
+  // await _page.getByRole('button', { name: 'Publish to web' }).click();
+  // await _page.waitForTimeout(5000);
+  // console.log(_page.url());
+  // console.log(
+  //   '[info] enableCloudAndPublic success ' +
+  //     _page
+  //       .url()
+  //       .replace('workspace', 'public-workspace')
+  //       .replace('/setting', '')
+  // );
 };
 const batchCreatePagesByNotes = async (_page: Page) => {
   const sourcePath = process.env.AFFiNE_LOCAL_SOURCE_PATH || './notes';
   const fileList = scanDirs(sourcePath).fileList;
   const pageTiles: string[] = removePrefixOfFileList(fileList, sourcePath);
   // const supppoertedFileTypes = ['.md', '.markdown', '.mdown', '.mkdn'];
-  SYNC_CLOUD_TIME = fileList.length * 5000 + 5000;
+  SYNC_CLOUD_TIME = fileList.length * 3000 + 5000;
   for (let i = 0; i < fileList.length; i++) {
     const file = fileList[i] as string;
     if (!file.includes('.md')) {
@@ -109,4 +119,5 @@ const batchCreatePagesByNotes = async (_page: Page) => {
     const pageTitle = pageTiles[i];
     await createPage(_page, pageTitle, pageContent);
   }
+  console.log('[info] batchCreatePagesByNotes success ' + SYNC_CLOUD_TIME);
 };

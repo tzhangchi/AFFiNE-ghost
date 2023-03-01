@@ -6,11 +6,10 @@ interface IType {
 }
 export function loadPage() {
   test.beforeEach(async ({ page }: IType) => {
-    console.log(process.env.AFFiNE_APP_URL);
+    // console.log(process.env.AFFiNE_APP_URL);
     await page.goto(process.env.AFFiNE_APP_URL);
 
     // waiting for page loading end
     await page.waitForSelector('#__next');
-    await page.waitForTimeout(2000);
   });
 }
