@@ -60,7 +60,7 @@ const passAuth = async (_page: Page) => {
   await _page.reload();
 
   await _page.waitForTimeout(3000);
-
+  //  TODO: check login success
   // check login success, if error here, please check your token
   // await _page.getByTestId('workspace-name').click();
   // await _page.waitForTimeout(1000);
