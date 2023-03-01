@@ -1,7 +1,8 @@
 # AFFiNE-ghost
+
 <img width="818" alt="image" src="https://user-images.githubusercontent.com/5910926/219852945-8433b4fc-1d6f-4947-819b-5b7d79cdffe7.png">
 
-AFFiNE-ghost is a tool that migrates notes into affine and easily generates an affine blog site from your personal notes by configuring the environment 
+AFFiNE-ghost is a tool that migrates notes into affine and easily generates an affine blog site from your personal notes by configuring the environment
 ![](https://visitor-badge.glitch.me/badge?page_id=tzhangchi.affine-ghost)
 
 ## Config .env
