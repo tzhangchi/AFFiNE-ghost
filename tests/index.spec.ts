@@ -18,6 +18,10 @@ test.describe('create cloud workspace by different ways of importing ', () => {
     await passAuth(page);
     console.log('[info] passAuth success');
 
+    // await page.getByTestId('workspace-name').click();
+    // await page.waitForTimeout(2000);
+    // await page.getByText('Hi, Developers').click();
+
     const newWorkspaceName =
       process.env.AFFiNE_WORKSPACE_NAME ||
       (process.env.AFFiNE_LOCAL_SOURCE_PATH &&
@@ -91,18 +95,18 @@ const enableCloudAndPublic = async (_page: Page) => {
 
   console.log(_page.url());
 
-  // await _page.getByRole('link', { name: 'Settings' }).click();
-  // await _page.getByText('Publish', { exact: true }).click();
-  // await _page.getByRole('button', { name: 'Publish to web' }).click();
-  // await _page.waitForTimeout(5000);
-  // console.log(_page.url());
-  // console.log(
-  //   '[info] enableCloudAndPublic success ' +
-  //     _page
-  //       .url()
-  //       .replace('workspace', 'public-workspace')
-  //       .replace('/setting', '')
-  // );
+  await _page.getByRole('link', { name: 'Settings' }).click();
+  await _page.getByText('Publish', { exact: true }).click();
+  await _page.getByRole('button', { name: 'Publish to web' }).click();
+  await _page.waitForTimeout(5000);
+  console.log(_page.url());
+  console.log(
+    '[info] enableCloudAndPublic success ' +
+      _page
+        .url()
+        .replace('workspace', 'public-workspace')
+        .replace('/setting', '')
+  );
 };
 const batchCreatePagesByNotes = async (_page: Page) => {
   const sourcePath = process.env.AFFiNE_LOCAL_SOURCE_PATH || './notes';
