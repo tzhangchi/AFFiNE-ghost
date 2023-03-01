@@ -97,6 +97,13 @@ const enableCloudAndPublic = async (_page: Page) => {
 
   console.log(_page.url());
 
+  const cloudWorkspaceId = _page
+    .url()
+    .split('/workspace/')[1]
+    .replace('/setting', '');
+  // if eable cloud success, the workspace id should be 21 length
+  expect(cloudWorkspaceId.length).toEqual(21);
+
   await _page.getByRole('link', { name: 'Settings' }).click();
   await _page.getByText('Publish', { exact: true }).click();
   await _page.getByRole('button', { name: 'Publish to web' }).click();
