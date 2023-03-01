@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "playwright test ./tests/index.spec.ts",
+    "dev": "playwright test ./tests/ghost.spec.ts",
     "test": "playwright test",
     "cg": "playwright  codegen https://app.affine.pro "
   },

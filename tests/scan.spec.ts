@@ -1,5 +1,5 @@
-import { test } from './libs/playwright';
-import { scanDirs, removePrefixOfFileList } from './libs/file-logic';
+import { test } from './fixtures/playwright';
+import { scanDirs, removePrefixOfFileList } from './fixtures/file-logic';
 
 // npx playwright test tests/scan.spec.ts
 test.describe('scan ', () => {
