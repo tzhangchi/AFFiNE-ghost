@@ -8,7 +8,7 @@ import { newPage } from './libs/page-logic';
 import { test } from './libs/playwright';
 import { createWorkspace } from './libs/workspace-logic';
 loadPage();
-const AFFiNE_LOGIN_TOEKN = process.env.AFFiNE_LOGIN_TOEKN;
+const AFFiNE_LOGIN_TOKEN = process.env.AFFiNE_LOGIN_TOKEN;
 let SYNC_CLOUD_TIME = 2500;
 test.describe('create cloud workspace by different ways of importing ', () => {
   test('import by markdowns', async ({ page }) => {
